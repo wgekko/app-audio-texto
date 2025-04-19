@@ -16,7 +16,8 @@ una lista de ellos para elegir uno y grabar) y una vez
 que tiene el audio lo transcribe, despliega un text area
 para dar la posiblidad de modificar el texto y una vez 
 modificado o no, se puede descargar tanto el texto como 
-el audio
+el audio (se usa libreria whisper-nivel medio
+- para mejor precision en la transcipción )
 3- app que mantiene las funcionalidades de la app anteior 
 y ademas de agrega la posibilidad de volver a grabar otro
 audio y trascribirlo a texto, esto abre la posibilidad
