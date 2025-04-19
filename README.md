@@ -18,11 +18,16 @@ para dar la posiblidad de modificar el texto y una vez
 modificado o no, se puede descargar tanto el texto como 
 el audio (se usa libreria whisper-nivel medio
 - para mejor precision en la transcipción )
+
+
 3- app que mantiene las funcionalidades de la app anteior 
 y ademas de agrega la posibilidad de volver a grabar otro
 audio y trascribirlo a texto, esto abre la posibilidad
 de hacer un historial de audio grabados y luego modificar o 
 no el texto y descargarlo
+
+
+
 4- app que mantiene las mejora de la app anterior 
 pero ahora agrega la posibilidad de descargar todos
 los audios y archivos de texto y crear un carpeta con formato 
