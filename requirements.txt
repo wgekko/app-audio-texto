@@ -1,0 +1,13 @@
+streamlit
+sounddevice
+wavio
+openai-whisper
+numpy
+scipy
+torch
+torchaudio
+tqdm
+requests
+ffmpeg-python
+smtplib
+email-validator

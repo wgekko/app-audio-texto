@@ -1,0 +1,111 @@
+/* ------------------------------
+   🎨 Fondo, texto y tipografía
+------------------------------- */
+
+body {
+    background-color: #0a2642 !important; /* azul intenso */
+    color: orange !important;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+}
+
+/* Estilos para los encabezados */
+h1, h2, h3, h4 {
+    color: #FFA500 !important;
+}
+
+
+p{
+    color: #09bdd4;
+}
+
+/* ------------------------------
+   ✨ Animación general de entrada
+------------------------------- */
+@keyframes fadeInUp {
+    from {
+        transform: translateY(10px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0px);
+        opacity: 1;
+    }
+}
+
+/* ------------------------------
+   🔘 Botones animados
+------------------------------- */
+.stButton > button {
+    background-color: #FFA500 !important;
+    color: #001f3f !important;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    padding: 0.6em 1.2em;
+    transition: all 0.3s ease;
+    animation: fadeInUp 0.5s ease forwards;
+    box-shadow: 0 4px 8px rgba(255, 165, 0, 0.2);
+}
+
+.stButton > button:hover {
+    background-color: #ffbb33 !important;
+    transform: scale(1.05);
+    cursor: pointer;
+    box-shadow: 0 6px 12px rgba(255, 165, 0, 0.4);
+}
+
+.stButton > button:active {
+    transform: scale(0.97);
+}
+
+/* ------------------------------
+   📝 Inputs, text areas, selects
+------------------------------- */
+input[type="text"], textarea, select {
+    background-color: #003366 !important;
+    color: orange !important;
+    border: 1px solid #FFA500 !important;
+    border-radius: 6px;
+    padding: 0.5em;
+    font-size: 1em;
+    transition: border 0.3s, box-shadow 0.3s;
+}
+
+input[type="text"]:focus, textarea:focus, select:focus {
+    border-color: #ffcc00 !important;
+    box-shadow: 0 0 5px #ffcc00 !important;
+    outline: none;
+}
+
+/* ------------------------------
+   🎚️ Slider personalizado
+------------------------------- */
+.css-1cpxqw2, .stSlider {
+    padding: 1em 0;
+}
+
+.stSlider > div[data-baseweb="slider"] {
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+.stSlider .css-14xtw13 {
+    background-color: #FFA500 !important;
+}
+
+.stSlider .css-1v0mbdj .css-1cpxqw2 {
+    background-color: #FFA500 !important;
+}
+
+.stSlider .css-1siy2j7 {
+    background-color: #FFA500 !important;
+}
+
+/* ------------------------------
+   🎧 Reproductor de audio
+------------------------------- */
+audio {
+    filter: drop-shadow(0 0 3px #FFA500);
+    margin-top: 10px;
+}
+
