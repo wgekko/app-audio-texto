@@ -40,4 +40,14 @@ video primer app
 https://github.com/user-attachments/assets/9aad3f97-a45b-4a2e-9c86-bd63cff0aa05
 
 
+video de app mas completa 
+
+
+
+https://github.com/user-attachments/assets/63803b35-b187-4a12-ae90-0353e7d8284c
+
+
+
+
+
 
