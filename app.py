@@ -23,51 +23,38 @@ warnings.simplefilter("ignore", category=FutureWarning)
 # Suprimir advertencias ValueWarning
 warnings.simplefilter("ignore")
 
-
-os.environ["STREAMLIT_DISABLE_WATCHDOG_WARNINGS"] = "true"
-#sys.modules["torch._classes"] = None
-
-st.set_page_config(page_title="App-Audio a Texto", page_icon="img/logo1.png", layout="centered",
-                   initial_sidebar_state="expanded")
+st.set_page_config(page_title="Transcibir-audio", page_icon="img/logo1.png", layout="centered",
+                   initial_sidebar_state="collapsed")
 
 
 # --------------------------
 # Cargar CSS personalizado
 # --------------------------
-
-#def apply_custom_style():
-#    css_paths = ["assets/style.css", "./style.css"]  # Opciones de ubicación
-
-#    for css_file in css_paths:
-#        if os.path.exists(css_file):
-#            with open(css_file) as f:
-#                st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
-#            return  # Sale al encontrar uno válido
-#
-#    st.warning("No se encontró el archivo 'style.css' en ninguna ruta conocida.")
-
-#apply_custom_style()
-
-# Estilos con modo claro / oscuro 
-def apply_custom_style(theme: str):
-    css_file = f"assets/style_{theme}.css"
-    if os.path.exists(css_file):
-       with open(css_file, encoding="utf-8") as f:
+def apply_custom_style():
+    css_file = "assets/style.css"
+    try:
+        with open(css_file) as f:
             st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
-    else:
-        st.warning(f"No se encontró el archivo de estilo: {css_file}")
-        
-#with open("assets/style.css", encoding="utf-8") as f:   
-#    st.markdown(f"<style>{f.read()} </style>", unsafe_allow_html=True)     
+    except FileNotFoundError:
+        st.error(f"No se encontró el archivo de estilo: {css_file}", icon=":material/cancel:")
 
-# Selector de tema
-st.sidebar.markdown("**Tema interfaz**")
-selected_theme = st.sidebar.selectbox("Selecciona un tema:", ["dark", "light"], format_func=lambda x: "🌙 Suave" if x == "dark" else "🌞 Intenso")
+apply_custom_style()
 
-# Aplicar tema
-apply_custom_style(selected_theme)
+# ------------------------------------------------------
+#def local_css(file_name):
+#    with open(file_name) as f:
+#        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-st.header("App de Transcipción de Audio a Texto")
+
+# Intenta cargar desde carpeta 'assets' o raíz
+#if os.path.exists("assets/style.css"):
+#    local_css("assets/style.css")
+#elif os.path.exists("assets/style.css"):
+#    local_css("assets/style.css")
+#else:#
+#    st.warning("Archivo style.css no encontrado")
+
+st.header(":orange[App de Transcipción de Audio]")
 
 st.image("img/main-page.jpg", caption=None, width=50, use_column_width=None, clamp=False, channels="RGB",
          output_format="auto", use_container_width=True)
@@ -172,14 +159,15 @@ def detener_y_transcribir():
 
 def mostrar_dispositivos():
     dispositivos = sd.query_devices()
-    st.write("Dispositivos disponibles :")
+    st.write("Dispositivos disponibles:")
     for i, d in enumerate(dispositivos):
         if d['max_input_channels'] > 0:
             st.write(f"{i}: {d['name']}")
 
 
 # ──────────────── INTERFAZ STREAMLIT ──────────────── #
-st.subheader("Subir Audio y Transcribir", divider=True)
+st.subheader(":orange[Subir Audio y Transcribir]", divider=True)
+
 c1, c2 = st.columns(2, border=True, vertical_alignment="center")
 with c1:
     st_lottie('https://lottie.host/d71ebc94-ead6-4aca-8dc8-0062336fde1f/X8PGsPl8vF.json', width=80)
@@ -189,10 +177,10 @@ with c2:
 # subir un audio y hacer la transcripción ---------------------
 
 with st.container(border=True):
-    archivo_audio = st.file_uploader("Subir archivo de audio", type=["wav", "mp3", "ogg"],
+    archivo_audio = st.file_uploader(":orange[Subir archivo de audio]", type=["wav", "mp3", "ogg"],
                                      key="uploader_audio")
 
-    if st.button("Subir y Transcribir", key="btn_subir_transcribir", disabled=st.session_state.grabando):
+    if st.button(":orange[Subir y Transcribir]", key="btn_subir_transcribir", disabled=st.session_state.grabando):
         st.audio(archivo_audio)
         if archivo_audio:
             with st.spinner("Transcribiendo audio subido..."):
@@ -209,15 +197,20 @@ with st.container(border=True):
 
 st.write("---")
 
+
 # --------------------------
 # inserccion de archivos gif
 # --------------------------
 def show_logo_uno():
     st.image("img/record.gif", caption=None, width=50, use_column_width=None, clamp=False, channels="RGB",
              output_format="auto", use_container_width=False)
+
+
 def show_logo_dos():
     st.image("img/voice.gif", caption=None, width=50, use_column_width=None, clamp=False, channels="RGB",
              output_format="auto", use_container_width=False)
+
+
 # --------------------------
 # Interfaz
 # --------------------------
@@ -227,7 +220,7 @@ with col1:
 with col2:
     show_logo_dos()
 
-st.subheader("Grabación y Transcripción", divider=True)  # icon=":material/record_voice_over:"
+st.subheader(":orange[Grabación y Transcripción]", divider=True)  # icon=":material/record_voice_over:"
 
 # Obtener dispositivos de entrada
 mic_devices = [device for device in sd.query_devices() if device['max_input_channels'] > 0]
@@ -285,7 +278,7 @@ if st.button("Iniciar grabación", icon=":material/mic:"):
 # Mostrar transcripción si existe
 if st.session_state.transcribed_text:
     st.subheader("Editar transcripción")
-    st.warning("Primero debe descargar el archivo original, este archivo esta editado, si desea hacer alguna modificación, escriba luego de enter en el final del texto para que tome las correcciones realizadas, y presiones el boton de descargar el arhivo actualizado")
+    st.warning("Este archivo esta editado, si desea hacer alguna modificación escribala luego de enter en el final del texto para que tome las correcciones realizadas, y posteriormente presiones el boton de descargar el arhivo")
     edited_text = st.text_area("Transcripción:", value=st.session_state.transcribed_text, height=250, key="edited_text")
 
     # ✅ Botones de descarga en columnas
@@ -315,7 +308,7 @@ st.write("---")
 with st.container():
     # st.write("---")
     st.write(
-        "&copy; - derechos reservados -  2025 -  Walter Gómez - FullStack Developer - Data Science - Business Intelligence")
+        ":orange[&copy; - derechos reservados -  2025 -  Walter Gómez - FullStack Developer - Data Science - Business Intelligence]:")
     # st.write("##")
     left, right = st.columns(2, gap='medium', vertical_alignment="bottom")
     with left:
