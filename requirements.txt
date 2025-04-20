@@ -9,6 +9,5 @@ torchaudio
 tqdm
 requests
 ffmpeg-python
-smtplib
 email-validator
 yamail
