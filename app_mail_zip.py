@@ -1,6 +1,13 @@
 import streamlit as st
 from email.message import EmailMessage
-import smtplib
+import base64
+from google_auth_oauthlib.flow import InstalledAppFlow
+from googleapiclient.discovery import build
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from email.mime.application import MIMEApplication
+#import smtplib
+import yagmail
 import sounddevice as sd
 import scipy.io.wavfile as wavfile
 from scipy.io.wavfile import write as write_wav
@@ -21,6 +28,8 @@ import wavio
 import whisper
 import zipfile
 import io
+from docx import Document
+from fpdf import FPDF
 
 import warnings
 warnings.simplefilter("ignore", category=FutureWarning)
@@ -364,37 +373,74 @@ if st.session_state.historial:
 st.markdown("---")
 st.subheader("Enviar grabación por correo")
 
+#-------- se comenta esta linea de codigo por hacer el display de streamit 
 if historial_filtrado:
     selected_to_send = st.selectbox("Selecciona la grabación a enviar", options=[item["nombre"] for item in historial_filtrado])
     destinatario = st.text_input("✉️ Correo del destinatario")
+    
+#--------------- otra funcion de envio de mail -------------------------
+def enviar_email_gmail_yagmail(destinatario, asunto, cuerpo, archivo_adjunto=None):
+    correo = st.secrets["email"]["user"]
+    password = st.secrets["email"]["password"]
 
-    def enviar_por_email(destinatario, nombre, audio_bytes, texto):
-        msg = EmailMessage()
-        msg["Subject"] = f"Grabación: {nombre}"
-        msg["From"] = "tu_correo@gmail.com"
-        msg["To"] = destinatario
-        msg.set_content("Adjunto encontrarás la grabación y la transcripción.")
+    try:
+        yag = yagmail.SMTP(user=correo, password=password)
 
-        msg.add_attachment(audio_bytes, maintype="audio", subtype="wav", filename=f"{nombre}.wav")
-        msg.add_attachment(texto.encode("utf-8"), maintype="text", subtype="plain", filename=f"{nombre}.txt")
+        # Si hay adjunto, se pasa como lista
+        if archivo_adjunto:
+            yag.send(
+                to=destinatario,
+                subject=asunto,
+                contents=cuerpo,
+                attachments=[archivo_adjunto]
+            )
+        else:
+            yag.send(
+                to=destinatario,
+                subject=asunto,
+                contents=cuerpo
+            )
 
-        try:
-            with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
-                smtp.login("tu_correo@gmail.com", "tu_contraseña_app")
-                smtp.send_message(msg)
-            return True
-        except Exception as e:
-            return f"Error: {e}"
+        return "✅ Correo enviado con éxito"
+    except Exception as e:
+        return f"❌ Error al enviar correo: {e}"
 
-    if st.button("Enviar correo"):
-        for item in historial_filtrado:
-            if item["nombre"] == selected_to_send:
-                resultado = enviar_por_email(destinatario, item["nombre"], item["audio_bytes"], item["texto"])
-                if resultado is True:
-                    st.success("Correo enviado correctamente " , icon=":material/done_all:")
-                else:
-                    st.error(f"Ocurrió un error al enviar: {resultado}")
-                break
+#---------------- funcion alternativa de envio de mail--------------------
+#def enviar_email_gmail(destinatario, asunto, cuerpo, archivo_adjunto=None, nombre_archivo=None):
+#    correo = st.secrets["email"]["user"]
+#    password = st.secrets["email"]["password"]
+
+#    msg = EmailMessage()
+#    msg["Subject"] = asunto
+#    msg["From"] = correo
+#    msg["To"] = destinatario
+#    msg.set_content(cuerpo)
+
+#    if archivo_adjunto and nombre_archivo:
+#        msg.add_attachment(archivo_adjunto,
+#                           maintype="application",
+#                           subtype="octet-stream",
+#                           filename=nombre_archivo)
+
+#    try:
+#        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
+#            smtp.login(correo, password)
+#            smtp.send_message(msg)
+#        return "Correo enviado correctamente"
+#    except Exception as e:
+#        return f"Error al enviar correo: {e}"
+
+#    if st.button("Enviar correo"):
+#        for item in historial_filtrado:
+#            if item["nombre"] == selected_to_send:
+#                resultado = enviar_por_email(destinatario, item["nombre"], item["audio_bytes"], item["texto"])
+#                if resultado is True:
+#                    st.success("Correo enviado correctamente " , icon=":material/done_all:")
+#                else:
+#                    st.error(f"Ocurrió un error al enviar: {resultado}")
+#                break
+
+
 # --------------- footer -----------------------------
 st.write("---")
 with st.container():
