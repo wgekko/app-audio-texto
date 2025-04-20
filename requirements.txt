@@ -11,4 +11,4 @@ requests
 ffmpeg-python
 smtplib
 email-validator
-smtplib
+secure-smtplib
