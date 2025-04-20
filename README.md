@@ -31,5 +31,13 @@ no el texto y descargarlo
 4- app que mantiene las mejora de la app anterior 
 pero ahora agrega la posibilidad de descargar todos
 los audios y archivos de texto y crear un carpeta con formato 
-zip. Y luego de hacer ese proceso habilita a enviar los archivos
+zip. Y luego de hacer
+ ese proceso habilita a enviar los archivos
 por mail
+
+video primer app 
+
+https://github.com/user-attachments/assets/9aad3f97-a45b-4a2e-9c86-bd63cff0aa05
+
+
+
